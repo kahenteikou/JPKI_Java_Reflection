@@ -16,6 +16,11 @@ public class JPKICryptAuthJNIW {
     private static Method getWinErrorCode_m;
     private static Method getMessage_m;
     private static Method cryptReleaseContext_m;
+    private static Method certCreateCertificateContext_m;
+    private static Method certFreeCertificateContext_m;
+    private static Method certGetPublicKeyInfo_m;
+    private static Method cryptImportPublicKey_m;
+    private static Method cryptGetUserKey_m;
 
     public static void Load_E(String JPKIJar_Path) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         File jpkijarfile=new File(JPKIJar_Path);
@@ -27,7 +32,11 @@ public class JPKICryptAuthJNIW {
         getWinErrorCode_m=JPKICryptAuthJNIException_class.getMethod("getWinErrorCode");
         getMessage_m=JPKICryptAuthJNIException_class.getMethod("getMessage");
         cryptReleaseContext_m=class_target.getMethod("cryptReleaseContext",long.class);
-
+        certCreateCertificateContext_m=class_target.getMethod("certCreateCertificateContext",byte[].class);
+        certFreeCertificateContext_m=class_target.getMethod("certFreeCertificateContext",long.class);
+        certGetPublicKeyInfo_m=class_target.getMethod("certGetPublicKeyInfo",long.class);
+        cryptImportPublicKey_m=class_target.getMethod("cryptImportPublicKey",long.class,byte[].class);
+        cryptGetUserKey_m=class_target.getMethod("cryptGetUserKey",long.class);
     }
     public static void Load_E() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Load_E(System.getenv("ProgramFiles")+"\\JPKILib\\Javalib64\\JPKICryptAuthJNI.jar");
@@ -54,4 +63,41 @@ public class JPKICryptAuthJNIW {
             e.printStackTrace();
         }
     }
+    public long certCreateCertificateContext(byte[] certValue) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (long) certCreateCertificateContext_m.invoke(target_class,certValue);
+        } catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public void certFreeCertificateContext(long hCert) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            certFreeCertificateContext_m.invoke(target_class,hCert);
+        } catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public byte[] certGetPublicKeyInfo(long hCert)throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (byte[])certGetPublicKeyInfo_m.invoke(target_class,hCert);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public long cryptImportPublicKey(long hProv,byte[] publicKeyInfo)throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (long)cryptImportPublicKey_m.invoke(target_class,hProv,publicKeyInfo);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public long cryptGetUserKey(long hProv) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (long)cryptGetUserKey_m.invoke(target_class,hProv);
+        }catch (InvocationTargetException | IllegalAccessException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+
+
 }
