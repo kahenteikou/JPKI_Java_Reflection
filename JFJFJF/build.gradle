@@ -1,8 +1,7 @@
 plugins {
     id 'java'
-    id 'application'
 }
-mainClassName="io.github.kahenteikou.debugjpki.MainCode"
+
 group 'io.github.kahenteikou'
 version '1.0-SNAPSHOT'
 
@@ -11,6 +10,7 @@ repositories {
 }
 
 dependencies {
+    implementation fileTree(dir:System.getenv()['ProgramFiles']+"\\JPKILib\\Javalib64",include:"*.jar")
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
