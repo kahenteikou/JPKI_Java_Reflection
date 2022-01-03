@@ -21,7 +21,17 @@ public class JPKICryptAuthJNIW {
     private static Method certGetPublicKeyInfo_m;
     private static Method cryptImportPublicKey_m;
     private static Method cryptGetUserKey_m;
-
+    private static Method cryptDestroyKey_m;
+    private static Method cryptGetCertificateValue_m;
+    private static Method cryptGetRootCertificateValue_m;
+    private static Method cryptCreateHash_m;
+    private static Method cryptCreateHash_2_m;
+    private  static  Method cryptHashData_m;
+    private static Method cryptGetHashValue_m;
+    private static Method cryptSetHashValue_m;
+    private static Method cryptSignHash_m;
+    private static Method cryptDestroyHash_m;
+    private static Method cryptVerifySignature_m;
     public static void Load_E(String JPKIJar_Path) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         File jpkijarfile=new File(JPKIJar_Path);
         URLClassLoader loader= URLClassLoader.newInstance(new URL[]{jpkijarfile.toURI().toURL()});
@@ -37,6 +47,17 @@ public class JPKICryptAuthJNIW {
         certGetPublicKeyInfo_m=class_target.getMethod("certGetPublicKeyInfo",long.class);
         cryptImportPublicKey_m=class_target.getMethod("cryptImportPublicKey",long.class,byte[].class);
         cryptGetUserKey_m=class_target.getMethod("cryptGetUserKey",long.class);
+        cryptDestroyKey_m=class_target.getMethod("cryptDestroyKey",long.class);
+        cryptGetCertificateValue_m=class_target.getMethod("cryptGetCertificateValue",long.class);
+        cryptGetRootCertificateValue_m=class_target.getMethod("cryptGetRootCertificateValue",long.class);
+        cryptCreateHash_m=class_target.getMethod("cryptCreateHash",long.class);
+        cryptCreateHash_2_m=class_target.getMethod("cryptCreateHash",long.class,int.class);
+        cryptHashData_m=class_target.getMethod("cryptHashData",long.class,byte[].class);
+        cryptGetHashValue_m=class_target.getMethod("cryptGetHashValue",long.class);
+        cryptSetHashValue_m=class_target.getMethod("cryptSetHashValue",long.class,byte[].class);
+        cryptSignHash_m=class_target.getMethod("cryptSignHash",long.class);
+        cryptDestroyHash_m=class_target.getMethod("cryptDestroyHash",long.class);
+        cryptVerifySignature_m=class_target.getMethod("cryptVerifySignature",long.class,byte[].class,long.class);
     }
     public static void Load_E() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException {
         Load_E(System.getenv("ProgramFiles")+"\\JPKILib\\Javalib64\\JPKICryptAuthJNI.jar");
@@ -94,10 +115,86 @@ public class JPKICryptAuthJNIW {
     public long cryptGetUserKey(long hProv) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
         try{
             return (long)cryptGetUserKey_m.invoke(target_class,hProv);
-        }catch (InvocationTargetException | IllegalAccessException e) {
+        }catch (InvocationTargetException e) {
             throw JPKICryptAuthJNIExceptionConverter(e.getCause());
         }
     }
-
+    public void cryptDestroyKey(long hKey) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            cryptDestroyKey_m.invoke(target_class,hKey);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public byte[] cryptGetCertificateValue(long hKey) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (byte[])cryptGetCertificateValue_m.invoke(target_class,hKey);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public byte[] cryptGetRootCertificateValue(long hProv) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (byte[]) cryptGetRootCertificateValue_m.invoke(target_class,hProv);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public long cryptCreateHash(long hProv) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (long)cryptCreateHash_m.invoke(target_class,hProv);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public long cryptCreateHash(long hProv,int algid) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (long)cryptCreateHash_2_m.invoke(target_class,hProv,algid);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public void cryptHashData(long hHash,byte[] data) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            cryptHashData_m.invoke(target_class,hHash,data);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public byte[] cryptGetHashValue(long hHash) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (byte[]) cryptGetHashValue_m.invoke(target_class,hHash);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public void cryptSetHashValue(long hHash,byte[] data) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            cryptSetHashValue_m.invoke(target_class,hHash,data);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public byte[] cryptSignHash(long hHash) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (byte[]) cryptSignHash_m.invoke(target_class,hHash);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public void cryptDestroyHash(long hHash) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            cryptDestroyHash_m.invoke(target_class,hHash);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
+    public boolean cryptVerifySignature(long hHash,byte[] signature,long hPubkey) throws InvocationTargetException, IllegalAccessException, E_JPKICryptAuthJNIException {
+        try{
+            return (boolean) cryptVerifySignature_m.invoke(target_class,hHash,signature,hPubkey);
+        }catch (InvocationTargetException e) {
+            throw JPKICryptAuthJNIExceptionConverter(e.getCause());
+        }
+    }
 
 }
